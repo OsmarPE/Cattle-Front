@@ -5,14 +5,18 @@ import {
 import { validateLogin } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { z } from "zod"
 import FormItem from '@/components/form/FormItem'
 import AuthText from "@/components/auth/AuthText"
 import AuthTitle from "@/components/auth/AuthTitle"
+import { LoginUser } from "@/services/user.service"
+import { toast } from "sonner"
 
 
 export default function Login() {
+
+    const nav = useNavigate()
 
     const form = useForm<z.infer<typeof validateLogin>>({
         resolver: zodResolver(validateLogin),
@@ -23,8 +27,14 @@ export default function Login() {
     })
 
 
-    const onSubmit = (data: z.infer<typeof validateLogin>) => {
-        console.log(data);
+    const onSubmit = async(data: z.infer<typeof validateLogin>) => {
+        const { status, message } = await LoginUser(data)
+        if(status === 'success'){
+            toast.success(message)
+        }else{
+            toast.error(message)
+        }
+        nav('/dashboard', {replace:true})   
 
     }
 

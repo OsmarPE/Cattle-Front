@@ -54,6 +54,7 @@ export const validateLogin = z.object({
 })
 
 export const validateRegister = z.object({
+  name:z.string({message:'Ingrese un nombre'}).min(5,{message:'El nombre debe tener al menos 5 caracteres'}),
   email:z.string({message:'Ingrese un correo electronico'}).email({message:'Ingrese un correo electronico valido'}),
   password:z.string({message:'Ingrese una contraseña'}).min(8,{message:'La contraseña debe ser minimo 8 caracteres'}),
   confirmPassword:z.string({message:'Ingrese nuevamente la contraseña'})

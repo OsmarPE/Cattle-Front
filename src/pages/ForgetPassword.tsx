@@ -9,9 +9,14 @@ import { z } from "zod"
 import FormItem from '@/components/form/FormItem'
 import AuthText from "@/components/auth/AuthText"
 import AuthTitle from "@/components/auth/AuthTitle"
+import { forgetPassword } from "@/services/user.service"
+import { toast } from "sonner"
+
 
 
 export default function ForgetPassword() {
+
+    
 
     const form = useForm<z.infer<typeof validateForgetPassword>>({
         resolver: zodResolver(validateForgetPassword),
@@ -21,9 +26,14 @@ export default function ForgetPassword() {
     })
 
 
-    const onSubmit = (data: z.infer<typeof validateForgetPassword>) => {
-        console.log(data);
-
+    const onSubmit = async (data: z.infer<typeof validateForgetPassword>) => {
+        const { status, message } = await forgetPassword(data)
+        if(status === 'success'){
+            toast.success(message)
+        }else{
+            toast.error(message)
+        }
+        
     }
 
     return (

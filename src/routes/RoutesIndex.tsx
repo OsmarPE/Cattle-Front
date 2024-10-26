@@ -36,7 +36,7 @@ export default function RoutesIndex() {
           element: <ForgetPassword/>
         },
         {
-          path:'confirm',
+          path:'confirm/:token',
           element:<ConfirmAccount/>
         },
 

@@ -9,9 +9,15 @@ import { z } from "zod"
 import AuthText from "@/components/auth/AuthText"
 import AuthTitle from "@/components/auth/AuthTitle"
 import FormInputOTP from "@/components/form/FormInputOTP"
+import { confirmUser } from "@/services/user.service"
+import { toast } from "sonner"
+import { useNavigate, useParams } from "react-router-dom"
 
 
 export default function ConfirmAccount() {
+
+    const { token } = useParams()
+    const nav = useNavigate()
 
     const form = useForm<z.infer<typeof confirmAccount>>({
         resolver: zodResolver(confirmAccount),
@@ -21,8 +27,14 @@ export default function ConfirmAccount() {
     })
 
 
-    const onSubmit = (data: z.infer<typeof confirmAccount>) => {
-        console.log(data);
+    const onSubmit = async(data: z.infer<typeof confirmAccount>) => {
+        const { status, message } = await confirmUser({code:+data.code,token: token ?? ''})
+        if(status === 'success'){
+            toast.success(message)
+        }else{
+            toast.error(message)
+        }
+        nav('/auth',{replace:true})
 
     }
 

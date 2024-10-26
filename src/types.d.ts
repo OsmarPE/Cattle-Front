@@ -1,3 +1,13 @@
+export interface UserType {
+    _id:string,
+    name:string,
+    email:string,
+    password:string,
+    code:number,
+    token:string,
+    confirm:string
+}
+
 
 export interface CattleType {
     _id:string,
